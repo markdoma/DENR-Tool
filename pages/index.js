@@ -1,9 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [count, setCount] = useState(0);
+  // const [lists, setLists] = useState(() => {
+  //   const savedLists = localStorage.getItem('lists');
+  //   savedLists ? JSON.parse(savedLists) : [];
+  // });
   const [lists, setLists] = useState([]);
-  const [currentInput, setCurrentInput] = useState('');
+
+  const [list, setList] = useState('');
+  // const [currentList, setCurrentList] = useState('');
+
+  // useEffect(() => {
+  //   localStorage.setItem('lists', JSON.stringify(lists));
+  // }, [lists]);
+
+  function handleDeleteButton(id) {
+    const removedList = lists.filter((list) => list.id !== id);
+    setLists(removedList);
+  }
 
   return (
     <div>
@@ -33,35 +48,49 @@ export default function Home() {
               action="submit"
               onSubmit={(e) => {
                 e.preventDefault();
-                setLists([...lists, currentInput]);
-                setCurrentInput('');
+                setLists([
+                  ...lists,
+                  {
+                    id: lists.length + 1,
+                    text: list,
+                  },
+                ]);
+                setList('');
               }}
             >
               <input
                 className="ml-3 border-black border rounded"
-                onChange={(e) => setCurrentInput(e.target.value)}
-                value={currentInput}
+                onChange={(e) => setList(e.target.value)}
+                name="list"
+                placeholder="Add new list"
+                value={list}
                 type="text"
                 required
               />
               <button className="p-3 bg-gray-100 rounded-lg">Add Item</button>
             </form>
           </div>
-
-          {lists ? (
-            lists.map((list) => (
-              <div className="flex items-center space-x-5">
-                <div className="flex justify-center items-center text-xl ">
-                  {list}
-                </div>
-                <div className="flex items-center rounded-full bg-red-100 px-2">
-                  x
-                </div>
-              </div>
-            ))
-          ) : (
-            <div>No Item Yet</div>
-          )}
+          <ul>
+            {lists ? (
+              lists.map((list) => (
+                <li key={list.id} className="flex items-center space-x-5">
+                  <input
+                    className="flex justify-center items-center text-xl"
+                    value={list.text}
+                    // onChange={(e, i) => setCurrentList(e.target.value)}
+                  />
+                  <button
+                    className="flex items-center rounded-full bg-red-100 px-2"
+                    onClick={() => handleDeleteButton(list.id)}
+                  >
+                    x
+                  </button>
+                </li>
+              ))
+            ) : (
+              <div>No Item Yet</div>
+            )}
+          </ul>
         </div>
       </div>
     </div>
