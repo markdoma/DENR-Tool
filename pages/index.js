@@ -71,25 +71,21 @@ export default function Home() {
             </form>
           </div>
           <ul>
-            {lists ? (
-              lists.map((list) => (
-                <li key={list.id} className="flex items-center space-x-5">
-                  <input
-                    className="flex justify-center items-center text-xl"
-                    value={list.text}
-                    // onChange={(e, i) => setCurrentList(e.target.value)}
-                  />
-                  <button
-                    className="flex items-center rounded-full bg-red-100 px-2"
-                    onClick={() => handleDeleteButton(list.id)}
-                  >
-                    x
-                  </button>
-                </li>
-              ))
-            ) : (
-              <div>No Item Yet</div>
-            )}
+            {lists.map((list) => (
+              <li key={list.id} className="flex items-center space-x-5">
+                <input
+                  className="flex justify-center items-center text-xl"
+                  value={list.text}
+                  // onChange={(e, i) => setCurrentList(e.target.value)}
+                />
+                <button
+                  className="flex items-center rounded-full bg-red-100 px-2"
+                  onClick={() => handleDeleteButton(list.id)}
+                >
+                  x
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
