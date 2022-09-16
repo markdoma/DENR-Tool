@@ -2,6 +2,9 @@ import { useState } from 'react';
 
 export default function Home() {
   const [count, setCount] = useState(0);
+  const [lists, setLists] = useState([]);
+  const [currentInput, setCurrentInput] = useState('');
+
   return (
     <div>
       <div className="flex justify-center text-3xl font-bold underline bg-blue-100 p-10">
@@ -25,12 +28,40 @@ export default function Home() {
           </div>
         </div>
         <div className="">
-          <form action="">
-            <div className="flex justify-start items-center space-x-2">
-              <label>Name</label>
-              <input className="border-black border rounded" type="text" />
-            </div>
-          </form>
+          <div className="flex justify-start items-center space-x-2">
+            <form
+              action="submit"
+              onSubmit={(e) => {
+                e.preventDefault();
+                setLists([...lists, currentInput]);
+                setCurrentInput('');
+              }}
+            >
+              <input
+                className="ml-3 border-black border rounded"
+                onChange={(e) => setCurrentInput(e.target.value)}
+                value={currentInput}
+                type="text"
+                required
+              />
+              <button className="p-3 bg-gray-100 rounded-lg">Add Item</button>
+            </form>
+          </div>
+
+          {lists ? (
+            lists.map((list) => (
+              <div className="flex items-center space-x-5">
+                <div className="flex justify-center items-center text-xl ">
+                  {list}
+                </div>
+                <div className="flex items-center rounded-full bg-red-100 px-2">
+                  x
+                </div>
+              </div>
+            ))
+          ) : (
+            <div>No Item Yet</div>
+          )}
         </div>
       </div>
     </div>
